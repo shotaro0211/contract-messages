@@ -96,16 +96,22 @@ textarea {
         .then(response => response.json())
         .then(data => {
           contract = new web3.eth.Contract(data, address);
-          if (window.ethereum && window.ethereum.isConnected()) {
-            web3.eth.getAccounts().then(e => {
-              myAddress = e[0]
-              contract.methods.getAllowance().call({from: myAddress}).then(data => {
-                if (data > 0) {
-                  document.getElementById("value-div").classList.remove("hide");
-                } else {
-                  document.getElementById("approve-div").classList.remove("hide");
-                }
-              });
+          if (window.ethereum) {
+            window.ethereum.isConnected().then(val => {
+              if (val) {
+                web3.eth.getAccounts().then(e => {
+                  myAddress = e[0]
+                  contract.methods.getAllowance().call({from: myAddress}).then(data => {
+                    if (data > 0) {
+                      document.getElementById("value-div").classList.remove("hide");
+                    } else {
+                      document.getElementById("approve-div").classList.remove("hide");
+                    }
+                  });
+                });
+              } else {
+                document.getElementById("connect-div").classList.remove("hide");
+              }
             });
           } else {
             document.getElementById("connect-div").classList.remove("hide");
