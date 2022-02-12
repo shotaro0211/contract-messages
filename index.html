@@ -96,7 +96,7 @@ textarea {
         .then(response => response.json())
         .then(data => {
           contract = new web3.eth.Contract(data, address);
-          if (Web3.givenProvider) {
+          if (window.ethereum) {
             web3.eth.getAccounts().then(e => {
               myAddress = e[0]
               contract.methods.getAllowance().call({from: myAddress}).then(data => {
