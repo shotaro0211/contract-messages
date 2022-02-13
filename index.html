@@ -120,32 +120,7 @@
     );
 
     const buttonConnect = async() => {
-      // Check if MetaMask is installed
-      if (!window.ethereum) {
-        window.alert(`Please install MetaMask.`);
-        return;
-      }
-
-      if (!web3) {
-        try {
-          // Request account access if needed
-          await window.ethereum.enable();
-
-          // We don't know window.web3 version, so we use our own instance of Web3
-          // with the injected provider given by MetaMask
-          web3 = new Web3(window.ethereum);
-        } catch {
-          window.alert(`Please authorize MetaMask.`);
-          return;
-        }
-      }
-
-      const coinbase = await web3.eth.getCoinbase();
-      if (!coinbase) {
-        window.alert(`Please activate MetaMask.`)
-        return;
-      }
-      location.reload();
+      window.ethereum.request({ method: 'eth_requestAccounts' }).then(location.reload());
     };
 
     const buttonMint = async() => {
