@@ -1,104 +1,105 @@
-<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ContractMessages</title>
+    <meta name="description" content="This NFT is full-on-chain.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      .hide {
+        display:none;
+      }
+      div {
+        color: white;
+      }
+      input {
+        resize: none;
+        width: 380px;
+        height: 30px;
+        font-size: 20px;
+      }
+      textarea {
+        resize: none;
+        width: 380px;
+        height: 200px;
+        font-size: 20px;
+      }
+      .c-button {
+        appearance: none;
+        border: 0;
+        border-radius: 5px;
+        background: white;
+        color: black;
+        padding: 8px 16px;
+        font-size: 16px;
+      }
+      .c-button:hover {
+        background: grey;
+      }
+      .c-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px #cbd6ee;
+      }
 
-<style>
-.hide {
-  display:none;
-}
-div {
-  color: white;
-}
-input {
-  resize: none;
-  width: 380px;
-  height: 30px;
-  font-size: 20px;
-}
-textarea {
-  resize: none;
-  width: 380px;
-  height: 200px;
-  font-size: 20px;
-}
-.c-button {
-  appearance: none;
-  border: 0;
-  border-radius: 5px;
-  background: white;
-  color: black;
-  padding: 8px 16px;
-  font-size: 16px;
-}
-.c-button:hover {
-  background: grey;
-}
-.c-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 4px #cbd6ee;
-}
+      ::placeholder {
+        color: #808080;
+        opacity: 0.8;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+  </head>
+  <body style="background-color: black;">
+    <div style="text-align: center; font-weight: bold; font-size: 50px; margin-top: 50px; margin-bottom: 50px;">
+      Contract Message
+    </div>
+    <div style="text-align: center">
+      <input placeholder="Write here what you expect. People expe" id="text1" type="text" maxlength="33" size="40">
+    </div>
+    <div style="text-align: center">
+      <input placeholder="ct too much and don't take risks. This serv" id="text2" type="text" maxlength="33" size="40">
+    </div>
+    <div style="text-align: center">
+      <input placeholder="ice may make such things disappear." id="text3" type="text" maxlength="33" size="40">
+    </div>
+    <div style="text-align: center">
+      <input id="text4" type="text" maxlength="33" size="40">
+    </div>
+    <div style="text-align: center">
+      <input id="text5" type="text" maxlength="33" size="40">
+    </div>
+    <div style="height: 50px"></div>
 
-::placeholder {
-  color: #808080;
-  opacity: 0.8;
-}
-</style>
+    <div class="hide" id="value-div" style="text-align: center; margin-bottom: 20px;">
+      <input style="width: 100px" id="value" type="number"  step="0.001", min="0.001", value="0.001">
+      ETH
+      <br><br><button class="c-button" onclick="buttonMint()">Mint</button>
+    </div>
+    <div class="hide" id="approve-div" style="text-align: center; margin-bottom: 20px;">
+      <button class="c-button" onclick="buttonApprove()">Approve</button>
+    </div>
+    <div class="hide" id="connect-div" style="text-align: center">
+      <button class="c-button" onclick="buttonConnect()">Connect</button>
+    </div>
+  </body>
+  <script>
+    var myAddress;
+    var contract;
+    var tokenContract;
+    var address = "0xC6E785C67E2fDE3f1e160f061fba5040C3c2bF0b";
+    var tokenAddress = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
+    var web3 = new Web3(Web3.givenProvider);
 
-<body style="background-color: black;">
-  <div style="text-align: center; font-weight: bold; font-size: 50px; margin-bottom: 50px;">
-    Contract Message
-  </div>
-  <div style="text-align: center">
-    <input placeholder="Write here what you expect. People expe" id="text1" type="text" maxlength="33" size="40">
-  </div>
-  <div style="height: 10"></div>
-  <div style="text-align: center">
-    <input placeholder="ct too much and don't take risks. This serv" id="text2" type="text" maxlength="33" size="40">
-  </div>
-  <div style="height: 10"></div>
-  <div style="text-align: center">
-    <input placeholder="ice may make such things disappear." id="text3" type="text" maxlength="33" size="40">
-  </div>
-  <div style="height: 10"></div>
-  <div style="text-align: center">
-    <input id="text4" type="text" maxlength="33" size="40">
-  </div>
-  <div style="height: 10"></div>
-  <div style="text-align: center">
-    <input id="text5" type="text" maxlength="33" size="40">
-  </div>
-  <div style="height: 50"></div>
-
-  <div class="hide" id="value-div" style="text-align: center; margin-bottom: 20;">
-    <input style="width: 100" id="value" type="number"  step="0.001", min="0.001", value="0.001">
-    ETH
-    <br><br><button class="c-button" onclick="buttonMint()">Mint</button>
-  </div>
-  <div class="hide" id="approve-div" style="text-align: center; margin-bottom: 20;">
-    <button class="c-button" onclick="buttonApprove()">Approve</button>
-  </div>
-  <div class="hide" id="connect-div" style="text-align: center">
-    <button class="c-button" onclick="buttonConnect()">Connect</button>
-  </div>
-</body>
-
-<script>
-  var myAddress;
-  var contract;
-  var tokenContract;
-  var address = "0xC6E785C67E2fDE3f1e160f061fba5040C3c2bF0b";
-  var tokenAddress = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
-  var web3 = new Web3(Web3.givenProvider);
-
-  fetch('MyToken.json')
-    .then(response => response.json())
-    .then(data => {
-      tokenContract = new web3.eth.Contract(data, tokenAddress);
-      fetch('ContractMessage.json')
-        .then(response => response.json())
-        .then(data => {
-          contract = new web3.eth.Contract(data, address);
-          if (window.ethereum) {
-            if (window.ethereum.isConnected()) {
-              web3.eth.getAccounts().then(e => {
+    fetch('MyToken.json')
+      .then(response => response.json())
+      .then(data => {
+        tokenContract = new web3.eth.Contract(data, tokenAddress);
+        fetch('ContractMessage.json')
+          .then(response => response.json())
+          .then(data => {
+            contract = new web3.eth.Contract(data, address);
+            web3.eth.getAccounts().then(e => {
+              console.log(e);
+              if (e.length > 0) {
                 myAddress = e[0]
                 contract.methods.getAllowance().call({from: myAddress}).then(data => {
                   if (data > 0) {
@@ -107,35 +108,59 @@ textarea {
                     document.getElementById("approve-div").classList.remove("hide");
                   }
                 });
-              });
-            } else {
-              document.getElementById("connect-div").classList.remove("hide");
-            }
-          } else {
-            document.getElementById("connect-div").classList.remove("hide");
+              } else {
+                document.getElementById("connect-div").classList.remove("hide");
+              }
+            });
           }
+        );
+      }
+    );
+
+    const buttonConnect = async() => {
+      // Check if MetaMask is installed
+      if (!window.ethereum) {
+        window.alert(`Please install MetaMask.`);
+        return;
+      }
+
+      if (!web3) {
+        try {
+          // Request account access if needed
+          await window.ethereum.enable();
+
+          // We don't know window.web3 version, so we use our own instance of Web3
+          // with the injected provider given by MetaMask
+          web3 = new Web3(window.ethereum);
+        } catch {
+          window.alert(`Please authorize MetaMask.`);
+          return;
         }
-      );
-    }
-  );
+      }
 
-  const buttonConnect = async() => {
-    window.ethereum.enable().then(location.reload());
-  };
+      const coinbase = await web3.eth.getCoinbase();
+      if (!coinbase) {
+        window.alert(`Please activate MetaMask.`)
+        return;
+      }
+      location.reload();
+    };
 
-  const buttonMint = async() => {
-    var text1 = document.getElementById("text1").value;
-    var text2 = document.getElementById("text2").value;
-    var text3 = document.getElementById("text3").value;
-    var text4 = document.getElementById("text4").value;
-    var text5 = document.getElementById("text5").value;
-    var value = document.getElementById("value").value;
-    contract.methods.claim([text1, text2, text3, text4, text5], Web3.utils.toWei(value, 'ether')).send({from: myAddress});
-  };
+    const buttonMint = async() => {
+      var text1 = document.getElementById("text1").value;
+      var text2 = document.getElementById("text2").value;
+      var text3 = document.getElementById("text3").value;
+      var text4 = document.getElementById("text4").value;
+      var text5 = document.getElementById("text5").value;
+      var value = document.getElementById("value").value;
+      contract.methods.claim([text1, text2, text3, text4, text5], Web3.utils.toWei(value, 'ether')).send({from: myAddress});
+    };
 
-  const buttonApprove = async() => {
-    tokenContract.methods.balanceOf(myAddress).call().then(function(result){
-      tokenContract.methods.approve(address, result).send({from: myAddress}).then(location.reload());
-    });
-  };
-</script>
+    const buttonApprove = async() => {
+      tokenContract.methods.balanceOf(myAddress).call().then(function(result){
+        tokenContract.methods.approve(address, result).send({from: myAddress}).then(location.reload());
+      });
+    };
+  </script>
+</html>
+
